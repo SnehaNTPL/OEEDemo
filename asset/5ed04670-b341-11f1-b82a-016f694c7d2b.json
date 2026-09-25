@@ -1,0 +1,321 @@
+{
+  "entityType" : "ASSET",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "assetProfileId" : {
+      "entityType" : "ASSET_PROFILE",
+      "id" : "cc469610-7e8a-11f0-9cec-c77113f624de"
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "13814000-1dd2-11b2-8080-808080808080"
+    },
+    "externalId" : null,
+    "id" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "label" : null,
+    "name" : "NTPL Plant",
+    "type" : "default"
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "85edd200-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59126
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "a5e039e0-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59124
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "c5a88480-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59127
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "3ef5a350-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59125
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ {
+    "configuration" : {
+      "type" : "RELATED_ENTITIES_AGGREGATION",
+      "arguments" : {
+        "OEE" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "OEE",
+            "type" : "TS_LATEST"
+          }
+        },
+        "availability" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "availability",
+            "type" : "TS_LATEST"
+          }
+        },
+        "performance" : {
+          "defaultValue" : "100",
+          "refEntityKey" : {
+            "key" : "performance",
+            "type" : "TS_LATEST"
+          }
+        },
+        "planned" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "planned",
+            "type" : "TS_LATEST"
+          }
+        },
+        "quality" : {
+          "defaultValue" : "100",
+          "refEntityKey" : {
+            "key" : "quality",
+            "type" : "TS_LATEST"
+          }
+        },
+        "shift_no" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "shift_no",
+            "type" : "TS_LATEST"
+          }
+        },
+        "shift_start" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "shift_start",
+            "type" : "TS_LATEST"
+          }
+        },
+        "total_good_count" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "total_good_count",
+            "type" : "TS_LATEST"
+          }
+        },
+        "total_reject_count" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "total_reject_count",
+            "type" : "TS_LATEST"
+          }
+        }
+      },
+      "deduplicationIntervalInSec" : 10,
+      "metrics" : {
+        "OEE" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "OEE"
+          }
+        },
+        "availability" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\n// var now = new Date().getTime();\nvar now = ctx.latestTs;\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "availability"
+          }
+        },
+        "performance" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "performance"
+          }
+        },
+        "planned" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "SUM",
+          "input" : {
+            "type" : "key",
+            "key" : "planned"
+          }
+        },
+        "quality" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "quality"
+          }
+        },
+        "shift_start" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "MAX",
+          "input" : {
+            "type" : "key",
+            "key" : "shift_start"
+          }
+        },
+        "total_good_count" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "SUM",
+          "input" : {
+            "type" : "key",
+            "key" : "total_good_count"
+          }
+        },
+        "total_reject_amount" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hour = (localMs - localMidnight) / 3600000;\n\n// Determine shift\nvar shiftHour;\nif (hour < 8) {\n    shiftHour = 0;\n} else if (hour < 16) {\n    shiftHour = 8;\n} else {\n    shiftHour = 16;\n}\n\n// Current shift start in UTC timestamp\nvar currentShiftStart = localMidnight + shiftHour * 3600000 - TZ_OFFSET_MIN * 60000;\n\n// Filter\nreturn shift_start == currentShiftStart;",
+          "function" : "SUM",
+          "input" : {
+            "type" : "key",
+            "key" : "total_reject_count"
+          }
+        }
+      },
+      "output" : {
+        "type" : "TIME_SERIES",
+        "strategy" : {
+          "type" : "RULE_CHAIN"
+        }
+      },
+      "relation" : {
+        "direction" : "FROM",
+        "relationType" : "Contains"
+      },
+      "scheduledUpdateEnabled" : true,
+      "scheduledUpdateInterval" : 10,
+      "useLatestTs" : true
+    },
+    "configurationVersion" : 0,
+    "debugSettings" : {
+      "allEnabled" : false,
+      "allEnabledUntil" : 1790317422152,
+      "failuresEnabled" : true
+    },
+    "name" : "Calculate Plant Shift OEE",
+    "tenantId" : {
+      "entityType" : "TENANT",
+      "id" : "cc2fb2b0-7e8a-11f0-9cec-c77113f624de"
+    },
+    "type" : "RELATED_ENTITIES_AGGREGATION"
+  }, {
+    "configuration" : {
+      "type" : "RELATED_ENTITIES_AGGREGATION",
+      "arguments" : {
+        "shift1_oee" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "shift1_oee",
+            "type" : "TS_LATEST"
+          }
+        },
+        "shift2_oee" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "shift2_oee",
+            "type" : "TS_LATEST"
+          }
+        },
+        "shift3_oee" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "shift3_oee",
+            "type" : "TS_LATEST"
+          }
+        }
+      },
+      "deduplicationIntervalInSec" : 10,
+      "metrics" : {
+        "shift1_oee" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\n\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\n\n// Today's midnight in IST\nvar localMidnight = localMs - (localMs % 86400000);\n\n// Convert back to UTC timestamp\nvar dayStartUtc = localMidnight - TZ_OFFSET_MIN * 60000;\n\n\n\nvar startTime;\nif (ctx.args.shift1_oee != 0)\n{\n    startTime = ctx.args.shift1_oee.ts;\n}\n\nvar startMs = startTime + TZ_OFFSET_MIN * 60000;\n\nvar startMidnight = startMs - (startMs % 86400000);\nvar daystartStartUtc = startMidnight - TZ_OFFSET_MIN * 60000;\n\n\n\nreturn daystartStartUtc == dayStartUtc;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "shift1_oee"
+          }
+        },
+        "shift2_oee" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\n\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\n\n// Today's midnight in IST\nvar localMidnight = localMs - (localMs % 86400000);\n\n// Convert back to UTC timestamp\nvar dayStartUtc = localMidnight - TZ_OFFSET_MIN * 60000;\n\n\n\nvar startTime;\nif (ctx.args.shift2_oee != 0)\n{\n    startTime = ctx.args.shift2_oee.ts;\n}\n\nvar startMs = startTime + TZ_OFFSET_MIN * 60000;\n\nvar startMidnight = startMs - (startMs % 86400000);\nvar daystartStartUtc = startMidnight - TZ_OFFSET_MIN * 60000;\n\n\n\nreturn daystartStartUtc == dayStartUtc;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "shift2_oee"
+          }
+        },
+        "shift3_oee" : {
+          "filter" : "var TZ_OFFSET_MIN = 330;\n\n// Current time\n\nvar now = new Date().getTime();\n\n// Convert to IST\nvar localMs = now + TZ_OFFSET_MIN * 60000;\n\n// Today's midnight in IST\nvar localMidnight = localMs - (localMs % 86400000);\n\n// Convert back to UTC timestamp\nvar dayStartUtc = localMidnight - TZ_OFFSET_MIN * 60000;\n\n\n\nvar startTime;\nif (ctx.args.shift3_oee != 0)\n{\n    startTime = ctx.args.shift3_oee.ts;\n}\nvar startMs = startTime + TZ_OFFSET_MIN * 60000;\n\nvar startMidnight = startMs - (startMs % 86400000);\nvar daystartStartUtc = startMidnight - TZ_OFFSET_MIN * 60000;\n\n\n\nreturn daystartStartUtc == dayStartUtc;",
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "shift3_oee"
+          }
+        }
+      },
+      "output" : {
+        "type" : "TIME_SERIES",
+        "strategy" : {
+          "type" : "RULE_CHAIN"
+        }
+      },
+      "relation" : {
+        "direction" : "FROM",
+        "relationType" : "Contains"
+      },
+      "scheduledUpdateEnabled" : true,
+      "scheduledUpdateInterval" : 10,
+      "useLatestTs" : true
+    },
+    "configurationVersion" : 0,
+    "debugSettings" : {
+      "allEnabled" : false,
+      "allEnabledUntil" : 1790317424476,
+      "failuresEnabled" : true
+    },
+    "name" : "Calculated Day OEE",
+    "tenantId" : {
+      "entityType" : "TENANT",
+      "id" : "cc2fb2b0-7e8a-11f0-9cec-c77113f624de"
+    },
+    "type" : "RELATED_ENTITIES_AGGREGATION"
+  } ]
+}

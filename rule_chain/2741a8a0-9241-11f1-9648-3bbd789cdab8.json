@@ -1,0 +1,205 @@
+{
+  "entityType" : "RULE_CHAIN",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "configuration" : null,
+    "debugMode" : true,
+    "externalId" : null,
+    "firstRuleNodeId" : {
+      "entityType" : "RULE_NODE",
+      "id" : "eff35890-9244-11f1-9648-3bbd789cdab8"
+    },
+    "id" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "2741a8a0-9241-11f1-9648-3bbd789cdab8"
+    },
+    "name" : "OEE Rule Chain",
+    "root" : false,
+    "type" : "CORE"
+  },
+  "metaData" : {
+    "connections" : [ {
+      "fromIndex" : 0,
+      "toIndex" : 3,
+      "type" : "False"
+    }, {
+      "fromIndex" : 1,
+      "toIndex" : 2,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 2,
+      "toIndex" : 4,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 3,
+      "toIndex" : 1,
+      "type" : "Success"
+    } ],
+    "firstNodeIndex" : 0,
+    "nodes" : [ {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 320,
+        "layoutY" : 158
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "jsScript" : "return msg.temperature > 20;",
+        "tbelScript" : "return msg.machine_status == null || msg.good_count == null || msg.reject_count == null;"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1789047144428,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "eff35890-9244-11f1-9648-3bbd789cdab8"
+      },
+      "name" : "Is machine telemetry",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.filter.TbJsFilterNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 685,
+        "layoutY" : 278
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "\n\n// ================= static config =================\nvar IDEAL_CYCLE_SEC = 12;   // per-piece ideal cycle time (seconds)\nvar TZ_OFFSET_MIN   = 330;  // IST = UTC+5:30\n\n// ================= helpers =================\n// Enrichment node returns values with literal quotes baked in, e.g. \"\\\"Running\\\"\".\n// Strip them before comparing or parsing.\nfunction str(v, dflt) {\n    if (v === null || v === undefined || v === \"\") return dflt;\n    var s = String(v).replace(/^\"|\"$/g, '');\n    return s === \"\" ? dflt : s;\n}\n\n\nfunction num(v, dflt) {\n    if (v === null || v === undefined || v === \"\")\n        return dflt;\n\n    v = String(v).replace(/^\"|\"$/g, '');\n\n    var n = Number(v);\n\n    return isNaN(n) ? dflt : n;\n}\n\nvar now = num(metadata.ts, new Date().getTime());\n\n// ================= determine current shift =================\n// Shifts (local time): 08:00-16:00 = shift 2, 16:00-24:00 = shift 3, 00:00-08:00 = shift 1\nvar localMs       = now + TZ_OFFSET_MIN * 60000;\nvar localMidnight = localMs - (localMs % 86400000);\nvar hourOfDay     = (localMs - localMidnight) / 3600000;\n\nvar shiftStartHour;\nvar shiftNo;\nvar plannedQty;\nif (hourOfDay < 8) {\n    shiftStartHour = 0;\n    shiftNo = 1;\n    plannedQty = Number(metadata.ss_shift1_planned);\n} else if (hourOfDay < 16) {\n    shiftStartHour = 8;\n    shiftNo = 2;\n    plannedQty = Number(metadata.ss_shift2_planned);\n} else {\n    shiftStartHour = 16;\n    shiftNo = 3;\n    plannedQty = Number(metadata.ss_shift3_planned);\n}\n\n// convert the local shift-start back to a UTC epoch value\nvar shiftStartUtc = localMidnight + shiftStartHour * 3600000 - TZ_OFFSET_MIN * 60000;\nshiftStartUtc = Math.round(shiftStartUtc);\n\n// ================= read back previous shift record =================\nvar prevShiftStart = num(metadata.shift_start, 0);\nvar isNewShift = (Math.round(prevShiftStart) !== shiftStartUtc);\n\nvar lastState   = str(metadata.last_state, \"idle\");\nvar lastStateTs = num(metadata.last_state_ts, 0);\n\nvar accOnline  = isNewShift ? 0 : num(metadata.total_online_time_min, 0);\nvar accOffline = isNewShift ? 0 : num(metadata.total_offline_time_min, 0);\n\n// ================= counts (DELTA model) =================\n// msg.good_count / msg.reject_count = produced SINCE THE LAST MESSAGE\nvar deltaGood   = num(msg.good_count, 0);\nvar deltaReject = num(msg.reject_count, 0);\n\nvar prevGood   = isNewShift ? 0 : num(metadata.total_good_count, 0);\nvar prevReject = isNewShift ? 0 : num(metadata.total_reject_count, 0);\n\nvar goodCount   = prevGood + deltaGood;\nvar rejectCount = prevReject + deltaReject;\n\n// ================= accumulate time in the PREVIOUS state =================\nvar fromTs = lastStateTs;\nif (fromTs < shiftStartUtc) {\n    fromTs = shiftStartUtc;   // clip: don't count time that belongs to the previous shift\n}\nif (lastStateTs > 0 && now > fromTs) {\n    var deltaMin = (now - fromTs) / 60000;\n    if (lastState.toLowerCase() === \"running\") {\n        accOnline = accOnline + deltaMin;\n    } else {\n        accOffline = accOffline + deltaMin;\n    }\n}\n\n// payload key is machine_status\nvar currentState = str(msg.machine_status, lastState);\n\n// ================= OEE =================\nvar totalCount = goodCount + rejectCount;\n\n// planned time = elapsed minutes since shift start (no break subtracted)\nvar plannedTime = (now - shiftStartUtc) / 60000;\n\nvar availability = plannedTime > 0 ? (accOnline / plannedTime) : 0;\nif (availability > 1) availability = 1;\n\nvar idealRatePerMin = IDEAL_CYCLE_SEC > 0 ? (60 / IDEAL_CYCLE_SEC) : 0;\nvar performance = 0;\nif (accOnline > 0 && idealRatePerMin > 0) {\n    performance = totalCount / (idealRatePerMin * accOnline);\n}\nif (performance > 1) performance = 1;\n\nvar quality = totalCount > 0 ? (goodCount / totalCount) : 0;\n\nvar oee = availability * performance * quality;\n\n\n// ================= output =================\nvar out = {\n    total_online_time_min:  Math.round(accOnline * 100) / 100,\n    total_offline_time_min: Math.round(accOffline * 100) / 100,\n    total_good_count:   goodCount,\n    total_reject_count: rejectCount,\n    availability: Math.round(availability * 10000) / 100,\n    performance:  Math.round(performance  * 10000) / 100,\n    quality:      Math.round(quality      * 10000) / 100,\n    OEE:          Math.round(oee          * 10000) / 100,\n    shift_no:      shiftNo,\n    shift_start:   shiftStartUtc,\n    last_state:    currentState,\n    last_state_ts: now,\n    planned: plannedQty\n};\n\n// ---------- Daily summary record (00:00 timestamp) ----------\n\n// Midnight timestamp (UTC)\nvar dayStartUtc = localMidnight - TZ_OFFSET_MIN * 60000;\ndayStartUtc = Math.round(dayStartUtc);\n\n// Create only the current shift key\nvar dailyMsg = {};\n\nif (shiftNo === 1) {\n    dailyMsg.shift1_oee = out.OEE;\n} else if (shiftNo === 2) {\n    dailyMsg.shift2_oee = out.OEE;\n} else {\n    dailyMsg.shift3_oee = out.OEE;\n}\n\n// Message 1 → Shift record\nvar shiftMetadata = Object.assign({}, metadata);\nshiftMetadata.ts = String(shiftStartUtc);\n\n// Message 2 → Daily record\nvar dayMetadata = Object.assign({}, metadata);\ndayMetadata.ts = String(dayStartUtc);\n\nreturn [\n    {\n        msg: out,\n        metadata: shiftMetadata,\n        msgType: msgType\n    },\n    {\n        msg: dailyMsg,\n        metadata: dayMetadata,\n        msgType: msgType\n    }\n];",
+        "tbelScript" : ""
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1790315567677,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "eff3cdc0-9244-11f1-9648-3bbd789cdab8"
+      },
+      "name" : "Calc OEE",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 993,
+        "layoutY" : 278
+      },
+      "configuration" : {
+        "defaultTTL" : 0,
+        "useServerTs" : false,
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        }
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1790315583475,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "eff3f4d0-9244-11f1-9648-3bbd789cdab8"
+      },
+      "name" : "Save shift record",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 372,
+        "layoutY" : 273
+      },
+      "configuration" : {
+        "tellFailureIfAbsent" : false,
+        "fetchTo" : "METADATA",
+        "clientAttributeNames" : [ ],
+        "sharedAttributeNames" : [ ],
+        "serverAttributeNames" : [ "shift1_planned", "shift2_planned", "shift3_planned" ],
+        "latestTsKeyNames" : [ "shift_start", "last_state", "last_state_ts", "total_online_time_min", "total_offline_time_min", "total_good_count", "total_reject_count" ],
+        "getLatestValueWithTs" : false
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1789110809102,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "b301c0e0-ad0e-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "Fetch Latest Value",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.metadata.TbGetAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "Calculated Shift Asset Data",
+        "layoutX" : 1152,
+        "layoutY" : 383
+      },
+      "configuration" : {
+        "version" : 0
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1790315576778,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "5337dff0-b583-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "Calculated Shift Asset Data",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbCalculatedFieldsNode"
+    } ],
+    "ruleChainConnections" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "cc3298e0-7e8a-11f0-9cec-c77113f624de"
+    },
+    "to" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "2741a8a0-9241-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Uses",
+    "typeGroup" : "COMMON",
+    "version" : 60035
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  }
+}

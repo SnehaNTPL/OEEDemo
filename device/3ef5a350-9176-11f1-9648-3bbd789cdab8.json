@@ -1,0 +1,140 @@
+{
+  "entityType" : "DEVICE",
+  "entity" : {
+    "additionalInfo" : {
+      "gateway" : false,
+      "overwriteActivityTime" : false,
+      "description" : ""
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "13814000-1dd2-11b2-8080-808080808080"
+    },
+    "deviceData" : {
+      "configuration" : {
+        "type" : "DEFAULT"
+      },
+      "transportConfiguration" : {
+        "type" : "DEFAULT"
+      }
+    },
+    "deviceProfileId" : {
+      "entityType" : "DEVICE_PROFILE",
+      "id" : "2ed38aa0-9176-11f1-9648-3bbd789cdab8"
+    },
+    "externalId" : null,
+    "firmwareId" : null,
+    "id" : {
+      "entityType" : "DEVICE",
+      "id" : "3ef5a350-9176-11f1-9648-3bbd789cdab8"
+    },
+    "label" : "CNC Machine 01",
+    "name" : "CNC Machine 01",
+    "softwareId" : null,
+    "type" : "Production Machine"
+  },
+  "credentials" : {
+    "credentialsId" : "48r3SenXBels9lLTGlbX",
+    "credentialsType" : "ACCESS_TOKEN",
+    "credentialsValue" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "3ef5a350-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59125
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ {
+      "booleanValue" : false,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "active",
+      "lastUpdateTs" : 1790312933333,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "break_min",
+      "lastUpdateTs" : 1786593969170,
+      "longValue" : 60,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "ideal_cycle_sec",
+      "lastUpdateTs" : 1786593946067,
+      "longValue" : 12,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "inactivityAlarmTime",
+      "lastUpdateTs" : 1790312933330,
+      "longValue" : 1790312933330,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastActivityTime",
+      "lastUpdateTs" : 1790312306551,
+      "longValue" : 1790312305922,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift1_planned",
+      "lastUpdateTs" : 1789103010145,
+      "longValue" : 500,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift2_planned",
+      "lastUpdateTs" : 1789103020786,
+      "longValue" : 700,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift3_planned",
+      "lastUpdateTs" : 1789103032336,
+      "longValue" : 600,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift_len_min",
+      "lastUpdateTs" : 1786593982315,
+      "longValue" : 480,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "tz_offset_min",
+      "lastUpdateTs" : 1786593956730,
+      "longValue" : 330,
+      "strValue" : null
+    } ],
+    "SHARED_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ ]
+}

@@ -1,0 +1,140 @@
+{
+  "entityType" : "DEVICE",
+  "entity" : {
+    "additionalInfo" : {
+      "gateway" : false,
+      "overwriteActivityTime" : false,
+      "description" : ""
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "13814000-1dd2-11b2-8080-808080808080"
+    },
+    "deviceData" : {
+      "configuration" : {
+        "type" : "DEFAULT"
+      },
+      "transportConfiguration" : {
+        "type" : "DEFAULT"
+      }
+    },
+    "deviceProfileId" : {
+      "entityType" : "DEVICE_PROFILE",
+      "id" : "2ed38aa0-9176-11f1-9648-3bbd789cdab8"
+    },
+    "externalId" : null,
+    "firmwareId" : null,
+    "id" : {
+      "entityType" : "DEVICE",
+      "id" : "85edd200-9176-11f1-9648-3bbd789cdab8"
+    },
+    "label" : "Injection Molding 01",
+    "name" : "Injection Molding 01",
+    "softwareId" : null,
+    "type" : "Production Machine"
+  },
+  "credentials" : {
+    "credentialsId" : "zMisAJPNNzvBNfBw2Mmj",
+    "credentialsType" : "ACCESS_TOKEN",
+    "credentialsValue" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "85edd200-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59126
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ {
+      "booleanValue" : false,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "active",
+      "lastUpdateTs" : 1789039489575,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "break_min",
+      "lastUpdateTs" : 1786593902167,
+      "longValue" : 60,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "ideal_cycle_sec",
+      "lastUpdateTs" : 1786593877852,
+      "longValue" : 12,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "inactivityAlarmTime",
+      "lastUpdateTs" : 1789039489571,
+      "longValue" : 1789039489571,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastActivityTime",
+      "lastUpdateTs" : 1789038878557,
+      "longValue" : 1789038878396,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift1_planned",
+      "lastUpdateTs" : 1789102967071,
+      "longValue" : 500,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift2_planned",
+      "lastUpdateTs" : 1789102978084,
+      "longValue" : 700,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift3_planned",
+      "lastUpdateTs" : 1789102991378,
+      "longValue" : 600,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift_len_min",
+      "lastUpdateTs" : 1786593916301,
+      "longValue" : 480,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "tz_offset_min",
+      "lastUpdateTs" : 1786593890784,
+      "longValue" : 330,
+      "strValue" : null
+    } ],
+    "SHARED_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ ]
+}

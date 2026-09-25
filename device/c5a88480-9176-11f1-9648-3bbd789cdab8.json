@@ -1,0 +1,108 @@
+{
+  "entityType" : "DEVICE",
+  "entity" : {
+    "additionalInfo" : {
+      "gateway" : false,
+      "overwriteActivityTime" : false,
+      "description" : ""
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "13814000-1dd2-11b2-8080-808080808080"
+    },
+    "deviceData" : {
+      "configuration" : {
+        "type" : "DEFAULT"
+      },
+      "transportConfiguration" : {
+        "type" : "DEFAULT"
+      }
+    },
+    "deviceProfileId" : {
+      "entityType" : "DEVICE_PROFILE",
+      "id" : "2ed38aa0-9176-11f1-9648-3bbd789cdab8"
+    },
+    "externalId" : null,
+    "firmwareId" : null,
+    "id" : {
+      "entityType" : "DEVICE",
+      "id" : "c5a88480-9176-11f1-9648-3bbd789cdab8"
+    },
+    "label" : "Packaging Machine 01",
+    "name" : "Packaging Machine 01",
+    "softwareId" : null,
+    "type" : "Production Machine"
+  },
+  "credentials" : {
+    "credentialsId" : "HEBTk6K5p37HJJPtQKpg",
+    "credentialsType" : "ACCESS_TOKEN",
+    "credentialsValue" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "5ed04670-b341-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "c5a88480-9176-11f1-9648-3bbd789cdab8"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59127
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ {
+      "booleanValue" : false,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "active",
+      "lastUpdateTs" : 1789987312405,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "inactivityAlarmTime",
+      "lastUpdateTs" : 1789987312403,
+      "longValue" : 1789987312403,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastActivityTime",
+      "lastUpdateTs" : 1789986695552,
+      "longValue" : 1789986692785,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift1_planned",
+      "lastUpdateTs" : 1789102829521,
+      "longValue" : 500,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift2_planned",
+      "lastUpdateTs" : 1789102883946,
+      "longValue" : 700,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "shift3_planned",
+      "lastUpdateTs" : 1789102876269,
+      "longValue" : 600,
+      "strValue" : null
+    } ],
+    "SHARED_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ ]
+}

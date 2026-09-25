@@ -1,0 +1,117 @@
+{
+  "entityType" : "ASSET",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "assetProfileId" : {
+      "entityType" : "ASSET_PROFILE",
+      "id" : "cc469610-7e8a-11f0-9cec-c77113f624de"
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "13814000-1dd2-11b2-8080-808080808080"
+    },
+    "externalId" : null,
+    "id" : {
+      "entityType" : "ASSET",
+      "id" : "6a899780-b596-11f1-b82a-016f694c7d2b"
+    },
+    "label" : null,
+    "name" : "CalcTemp Asset 1",
+    "type" : "default"
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "6a899780-b596-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "5e49e920-b596-11f1-b82a-016f694c7d2b"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59667
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "6a899780-b596-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "62becf70-b596-11f1-b82a-016f694c7d2b"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 59666
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ {
+    "configuration" : {
+      "type" : "RELATED_ENTITIES_AGGREGATION",
+      "arguments" : {
+        "TempC" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "TempC",
+            "type" : "TS_LATEST"
+          }
+        },
+        "TempF" : {
+          "defaultValue" : "0",
+          "refEntityKey" : {
+            "key" : "TempF",
+            "type" : "TS_LATEST"
+          }
+        }
+      },
+      "deduplicationIntervalInSec" : 10,
+      "metrics" : {
+        "AvgTemp" : {
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "TempF"
+          }
+        },
+        "AvgTempC" : {
+          "function" : "AVG",
+          "input" : {
+            "type" : "key",
+            "key" : "TempC"
+          }
+        }
+      },
+      "output" : {
+        "type" : "TIME_SERIES",
+        "strategy" : {
+          "type" : "RULE_CHAIN"
+        }
+      },
+      "relation" : {
+        "direction" : "FROM",
+        "relationType" : "Contains"
+      },
+      "scheduledUpdateEnabled" : true,
+      "scheduledUpdateInterval" : 10,
+      "useLatestTs" : false
+    },
+    "configurationVersion" : 0,
+    "debugSettings" : {
+      "allEnabled" : false,
+      "allEnabledUntil" : 1789986665430,
+      "failuresEnabled" : true
+    },
+    "name" : "Calc AvgTempF",
+    "tenantId" : {
+      "entityType" : "TENANT",
+      "id" : "cc2fb2b0-7e8a-11f0-9cec-c77113f624de"
+    },
+    "type" : "RELATED_ENTITIES_AGGREGATION"
+  } ]
+}

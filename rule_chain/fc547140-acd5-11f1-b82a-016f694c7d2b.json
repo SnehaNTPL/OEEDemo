@@ -1,0 +1,205 @@
+{
+  "entityType" : "RULE_CHAIN",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "configuration" : null,
+    "debugMode" : false,
+    "externalId" : null,
+    "firstRuleNodeId" : null,
+    "id" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "fc547140-acd5-11f1-b82a-016f694c7d2b"
+    },
+    "name" : "Generate Demo Shift Data",
+    "root" : false,
+    "type" : "CORE"
+  },
+  "metaData" : {
+    "connections" : [ {
+      "fromIndex" : 0,
+      "toIndex" : 4,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 1,
+      "toIndex" : 4,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 2,
+      "toIndex" : 4,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 3,
+      "toIndex" : 4,
+      "type" : "Success"
+    } ],
+    "firstNodeIndex" : null,
+    "nodes" : [ {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 380,
+        "layoutY" : 147
+      },
+      "configuration" : {
+        "msgCount" : 500,
+        "periodInSeconds" : 2,
+        "scriptLang" : "JS",
+        "jsScript" : "// index = 0...503 \n//\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-10);\n\nvar index = prevMetadata.index ? Number(prevMetadata.index) : 0;\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\n// if(step === 0 || step === 7){\n//     state = \"idle\";\n// }\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        // shiftStart: shiftStart.getTime(),\n        ts:String(ts),\n        // tsString: new Date(ts),\n        index: String(index + 1)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "tbelScript" : "// index = 0...503\n\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-21);\n\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\nif(step === 0 || step === 7){\n    state = \"idle\";\n}\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        ts:String(ts)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "originatorId" : "a5e039e0-9176-11f1-9648-3bbd789cdab8",
+        "originatorType" : "DEVICE"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1789130799382,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4ea54f10-ace9-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "Historical Data Generator",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 375,
+        "layoutY" : 214
+      },
+      "configuration" : {
+        "msgCount" : 500,
+        "periodInSeconds" : 2,
+        "scriptLang" : "JS",
+        "jsScript" : "// index = 0...503 \n//\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-20);\n\nvar index = prevMetadata.index ? Number(prevMetadata.index) : 0;\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\n// if(step === 0 || step === 7){\n//     state = \"idle\";\n// }\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        // shiftStart: shiftStart.getTime(),\n        ts:String(ts),\n        // tsString: new Date(ts),\n        index: String(index + 1)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "tbelScript" : "",
+        "originatorId" : "3ef5a350-9176-11f1-9648-3bbd789cdab8",
+        "originatorType" : "DEVICE"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1789111808674,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4ea54f11-ace9-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "CNC Generate Data",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 368,
+        "layoutY" : 295
+      },
+      "configuration" : {
+        "msgCount" : 500,
+        "periodInSeconds" : 2,
+        "scriptLang" : "JS",
+        "jsScript" : "// index = 0...503 \n//\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-20);\n\nvar index = prevMetadata.index ? Number(prevMetadata.index) : 0;\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\n// if(step === 0 || step === 7){\n//     state = \"idle\";\n// }\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        // shiftStart: shiftStart.getTime(),\n        ts:String(ts),\n        // tsString: new Date(ts),\n        index: String(index + 1)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "tbelScript" : "// index = 0...503\n\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-21);\n\nvar index = prevMetadata.index ? Number(prevMetadata.index) : 0;\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\nif(step === 0 || step === 7){\n    state = \"idle\";\n}\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        ts:String(ts)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "originatorId" : "85edd200-9176-11f1-9648-3bbd789cdab8",
+        "originatorType" : "DEVICE"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4ea54f12-ace9-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "Injection Data generator",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 368,
+        "layoutY" : 374
+      },
+      "configuration" : {
+        "msgCount" : 500,
+        "periodInSeconds" : 2,
+        "scriptLang" : "JS",
+        "jsScript" : "// index = 0...503 \n//\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-20);\n\nvar index = prevMetadata.index ? Number(prevMetadata.index) : 0;\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\n// if(step === 0 || step === 7){\n//     state = \"idle\";\n// }\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        // shiftStart: shiftStart.getTime(),\n        ts:String(ts),\n        // tsString: new Date(ts),\n        index: String(index + 1)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "tbelScript" : "// index = 0...503\n\nvar start = new Date();\nstart.setHours(0,0,0,0);\nstart.setDate(start.getDate()-21);\n\nvar index = prevMetadata.index ? Number(prevMetadata.index) : 0;\nvar msgsPerShift = 8;\n\nvar shiftIndex = Math.floor(index / msgsPerShift);\nvar day = Math.floor(shiftIndex / 3);\nvar shift = shiftIndex % 3;\n\nvar shiftHour = [0,8,16][shift];\n\nvar shiftStart = new Date(start);\nshiftStart.setDate(start.getDate()+day);\nshiftStart.setHours(shiftHour,0,0,0);\n\nvar step = index % msgsPerShift;\n\n// 8 events spread across the 8-hour shift\nvar slotStartMin = step * 60;\n\n// Random minute (0-59) and second (0-59)\nvar randomMin = Math.floor(Math.random() * 60);\nvar randomSec = Math.floor(Math.random() * 60);\n\n// Historical timestamp\nvar ts = shiftStart.getTime()\n        + (slotStartMin + randomMin) * 60000\n        + randomSec * 1000;\n\nvar state = \"running\";\n\nif(step === 0 || step === 7){\n    state = \"idle\";\n}\n\nvar good = state === \"running\"\n    ? Math.round(180 + Math.random()*90)\n    : 0;\n\nvar reject = state === \"running\"\n    ? Math.round(Math.random()*8)\n    : 0;\n\nreturn {\n    msg:{\n        machine_status: state,\n        good_count: good,\n        reject_count: reject\n    },\n    metadata:{\n        ts:String(ts)\n    },\n    msgType:\"POST_TELEMETRY_REQUEST\"\n};",
+        "originatorId" : "c5a88480-9176-11f1-9648-3bbd789cdab8",
+        "originatorType" : "DEVICE"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4ea54f13-ace9-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "Packaging Data Generator",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 716,
+        "layoutY" : 245
+      },
+      "configuration" : {
+        "forwardMsgToDefaultRuleChain" : false,
+        "ruleChainId" : "cc3298e0-7e8a-11f0-9cec-c77113f624de"
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1789047193106,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4ea57620-ace9-11f1-b82a-016f694c7d2b"
+      },
+      "name" : "OEE Rule chain",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.flow.TbRuleChainInputNode"
+    } ],
+    "ruleChainConnections" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "fc547140-acd5-11f1-b82a-016f694c7d2b"
+    },
+    "to" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "cc3298e0-7e8a-11f0-9cec-c77113f624de"
+    },
+    "type" : "Uses",
+    "typeGroup" : "COMMON",
+    "version" : 58873
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  }
+}

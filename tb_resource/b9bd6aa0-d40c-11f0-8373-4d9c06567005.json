@@ -1,0 +1,37 @@
+{
+  "entityType" : "TB_RESOURCE",
+  "entity" : {
+    "data" : "AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAAOptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAEOAAEAAAAAAAAD8QAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAamlwcnAAAABLaXBjbwAAABNjb2xybmNseAABAA0ABoAAAAAMYXYxQ4EBDAAAAAAUaXNwZQAAAAAAAALkAAABSQAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEAYIDBAAAA/ltZGF0EgAKChhmLjpDBAQ0GhAy4AdEYABRRRRQtGdf4sW/5FciHVBaOOMnqFf2Po0XPiGMLnmdIUlEBcepYJhW6pRphp3yC8kRJPrM7/0kic9smWDVYAtlMuQOYEF52mIw2DkkLuVyGZTuVvkEqoB2/QbgL5iFIkFf2zb/3Oe51GIiRqe3Jco6KRF0YWkUKMzrJE0+FpBbVSOhRiW5yFSWUn8EQh3d5u+hdkyTtwwf9058qWTezGYpJ6CDn1u8+bf2NyMWSXDw4RqrL0vxMTNGoEUte24FIXSKsrwkNPla4FUyw13jQA/36stum9vBpHSIkolhGOEWMkEwpvMwKNW3nFFWruUgmS4UlezbbJnsyZgnNVfco1xCM2RrSvkdMQIoNoVqz1zKLW3RpzAU4wX+lVkfAxWddkIn7DsFqNixEGsWky/GPGO6XjfWgO/EFXB7u7FYMaXlRoG/p4Ytx+mGIhKrYIMCXRIfDcJG9WV7rQHC3quVm+DbIn4Y6/0DdZ6SEVHiBkLSHMFUPXlXWuySWNiaflD7D6xJNb1Mm/3LjQolr3EctHeDQGfUQuv54E37B1c+s+ggT+BKbqG5VwThbuR2ALVUPXCT3IhuDNI+wRsTwYrY5gKdyVMPHuTZ5pY2zMNnpyPa50WBIjtP+5SlV2QT5qAs7LCgs/0q7ioBe/ZuCwMq+BNbNQ5IJFgUr+DqbS/PPEKIo9lCsmNCso4F/cO+gyG04J4Ms6oLK41wKXhr2a2lnIolaSAFe5H54XaCtuhabdnVcNiuhXxB00kDbX2qbx0oRHkqHKbdYrgTNPL4OOYEf/+N7Eg/0CHnDqTCj3UWJGd2IIUrNCv//azuVMb1vjaMUEq35J8j37fglVz0TNKNd07266cjahuGAq81yJWx1IHD5UUpfP/zPgfOQlqzP3sZWsrfWkg/Actv3CWN6KN2b/3QawOhxp4F1/AGx117Ye4lXcFSjvn3oKiaGutXOxQYHzc4eRq3uHPhCZFdRAlI8RBNIzFAaUw4psLsoEWAbhKPB98FAB0WrOD6T0LjeMvB5VjRfl3htrx3xGFhmmefYCuEOQHVEt4VozuVSjmKYE5b2mgLRq/RsVu0tDudDM+g9LmQY+yn6VLP2Uz5dpzURk13qys0C4blkXm5gN9m5hz8KBBRghscCQtmnS/VrDi+jlQVR7ZSqjihGxOx31lf6GtIAebV6MlkNcPMwz03giMW+4ExfW4gwwZobEL4erMxFq+uftOt8Y8ZAU8wXORl4g6FGtDNQsrQqwkAV2/bU/n+rr3ClLM+bsL0NI5tPqrudlrXZRkMzrRfjZb5o88khJbbPh3StJxHm6MT000GiA==",
+    "descriptor" : {
+      "mediaType" : "image/avif",
+      "width" : 0,
+      "height" : 0,
+      "size" : 1279,
+      "etag" : "1cfa7de09b9a7dc85d14f7bef07d295ee08c8106f5a4aa33c98bb51d938c8e5f",
+      "previewDescriptor" : {
+        "mediaType" : "image/avif",
+        "width" : 0,
+        "height" : 0,
+        "size" : 1279,
+        "etag" : "1cfa7de09b9a7dc85d14f7bef07d295ee08c8106f5a4aa33c98bb51d938c8e5f"
+      }
+    },
+    "etag" : "1cfa7de09b9a7dc85d14f7bef07d295ee08c8106f5a4aa33c98bb51d938c8e5f",
+    "externalId" : null,
+    "fileName" : "abstract-white-background-design_1074020-1285.avif",
+    "id" : {
+      "entityType" : "TB_RESOURCE",
+      "id" : "b9bd6aa0-d40c-11f0-8373-4d9c06567005"
+    },
+    "link" : "/api/images/tenant/abstract-white-background-design_1074020-1285.avif",
+    "name" : "abstract-white-background-design_1074020-1285.avif",
+    "preview" : null,
+    "public" : true,
+    "publicLink" : "/api/images/public/7L1WT4q62PvuW1uka9sIM9atiuic1JBF",
+    "publicResourceKey" : "7L1WT4q62PvuW1uka9sIM9atiuic1JBF",
+    "resourceKey" : "abstract-white-background-design_1074020-1285.avif",
+    "resourceSubType" : "IMAGE",
+    "resourceType" : "IMAGE",
+    "title" : "abstract-white-background-design_1074020-1285.avif"
+  }
+}
